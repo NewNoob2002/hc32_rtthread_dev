@@ -393,15 +393,8 @@ Usart::Usart(struct usart_config_t *config, gpio_pin_t tx_pin, gpio_pin_t rx_pin
     this->config = config;
     this->tx_pin = tx_pin;
     this->rx_pin = rx_pin;
-    
-    // initialize and assign rx and tx buffers
-    this->rxBuffer = new RingBuffer<uint8_t>(rx_buffer_size);
-    this->txBuffer = new RingBuffer<uint8_t>(tx_buffer_size);
-    CORE_ASSERT(this->rxBuffer != nullptr, "rx_buffer null");
-    CORE_ASSERT(this->txBuffer != nullptr, "tx_buffer null");
-
-    this->config->state.rx_buffer = this->rxBuffer;
-    this->config->state.tx_buffer = this->txBuffer;
+		this->_rx_buffer_size = rx_buffer_size;
+		this->_tx_buffer_size = tx_buffer_size;
 }
 
 Usart::~Usart()
@@ -422,6 +415,14 @@ Usart::~Usart()
 
 void Usart::begin(uint32_t baud)
 {
+	    // initialize and assign rx and tx buffers
+    this->rxBuffer = new RingBuffer<uint8_t>(_rx_buffer_size);
+    this->txBuffer = new RingBuffer<uint8_t>(_tx_buffer_size);
+    CORE_ASSERT(this->rxBuffer != nullptr, "rx_buffer null");
+    CORE_ASSERT(this->txBuffer != nullptr, "tx_buffer null");
+
+    this->config->state.rx_buffer = this->rxBuffer;
+    this->config->state.tx_buffer = this->txBuffer;
     // default to 8 bits, no parity, 1 stop bit
     begin(baud, SERIAL_8N1);
 }

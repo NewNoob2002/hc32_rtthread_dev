@@ -134,7 +134,8 @@ private:
   // rx / tx buffers (unboxed from config)
   RingBuffer<uint8_t> *rxBuffer;
   RingBuffer<uint8_t> *txBuffer;
-
+	size_t _rx_buffer_size;
+	size_t _tx_buffer_size;
   // is initialized? (begin() called)
   bool initialized = false;
 };
