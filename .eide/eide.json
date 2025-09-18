@@ -1,0 +1,468 @@
+{
+  "name": "hc32_rtthread",
+  "type": "ARM",
+  "dependenceList": [],
+  "srcDirs": [],
+  "virtualFolder": {
+    "name": "<virtual_root>",
+    "files": [],
+    "folders": [
+      {
+        "name": "user",
+        "files": [
+          {
+            "path": "user/main.cpp"
+          },
+          {
+            "path": "libraries/rt-thread/bsp/board.c"
+          },
+          {
+            "path": "user/InitBoard.cpp"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "core",
+        "files": [
+          {
+            "path": "platform/core/delay.c"
+          },
+          {
+            "path": "platform/core/system.c"
+          },
+          {
+            "path": "platform/core/sysclock.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "platform",
+        "files": [
+          {
+            "path": "platform/syscalls/syscalls.c"
+          },
+          {
+            "path": "platform/mcu/common/system_hc32f460.c"
+          },
+          {
+            "path": "platform/startup/mdk_arm/startup_hc32f460.s"
+          },
+          {
+            "path": "platform/syscalls/new.cpp"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "driver",
+        "files": [
+          {
+            "path": "platform/mcu/common/hc32_ddl.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_adc.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_clk.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_gpio.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_i2c.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_icg.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_interrupts.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_spi.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_usart.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_utility.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_efm.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_sram.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_pwc.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_timera.c"
+          },
+          {
+            "path": "platform/drivers/src/hc32f460_exint_nmi_swi.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "libraries",
+        "files": [],
+        "folders": [
+          {
+            "name": "rtthread",
+            "files": [
+              {
+                "path": "libraries/rt-thread/src/clock.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/components.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/cpu.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/idle.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/ipc.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/irq.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/kservice.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/mem.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/memheap.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/mempool.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/object.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/scheduler.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/slab.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/thread.c"
+              },
+              {
+                "path": "libraries/rt-thread/src/timer.c"
+              },
+              {
+                "path": "libraries/rt-thread/libcpu/arm/cortex-m4/cpuport.c"
+              },
+              {
+                "path": "libraries/rt-thread/libcpu/arm/cortex-m4/context_rvds.S"
+              },
+              {
+                "path": "libraries/rt-thread/bsp/rtconfig.h"
+              }
+            ],
+            "folders": []
+          }
+        ]
+      },
+      {
+        "name": "Arduino",
+        "files": [
+          {
+            "path": "Arduino/avr/dtostrf.c"
+          },
+          {
+            "path": "Arduino/variants/generic_hc32f460/variant.cpp"
+          },
+          {
+            "path": "Arduino/abi.cpp"
+          },
+          {
+            "path": "Arduino/Print.cpp"
+          },
+          {
+            "path": "Arduino/Stream.cpp"
+          },
+          {
+            "path": "Arduino/WInterrupts.cpp"
+          },
+          {
+            "path": "Arduino/wiring_analog.cpp"
+          },
+          {
+            "path": "Arduino/wiring_digital.cpp"
+          },
+          {
+            "path": "Arduino/WMath.cpp"
+          },
+          {
+            "path": "Arduino/WString.cpp"
+          },
+          {
+            "path": "Arduino/itoa.c"
+          },
+          {
+            "path": "Arduino/wiring_shift.c"
+          },
+          {
+            "path": "Arduino/yield.c"
+          }
+        ],
+        "folders": [
+          {
+            "name": "core",
+            "files": [
+              {
+                "path": "Arduino/drivers/adc/adc.cpp"
+              },
+              {
+                "path": "Arduino/drivers/adc/adc_config.cpp"
+              },
+              {
+                "path": "Arduino/drivers/gpio/addon_gpio.c"
+              },
+              {
+                "path": "Arduino/drivers/irqn/irqn.cpp"
+              },
+              {
+                "path": "Arduino/drivers/panic/ddl_assert.c"
+              },
+              {
+                "path": "Arduino/drivers/panic/panic.cpp"
+              },
+              {
+                "path": "Arduino/drivers/sysclock/sysclock_util.cpp"
+              },
+              {
+                "path": "Arduino/drivers/timera/timera_config.cpp"
+              },
+              {
+                "path": "Arduino/drivers/usart/Usart.cpp"
+              },
+              {
+                "path": "Arduino/drivers/usart/usart_config.cpp"
+              },
+              {
+                "path": "Arduino/drivers/usart/usart_sync.cpp"
+              }
+            ],
+            "folders": []
+          },
+          {
+            "name": "libraries",
+            "files": [
+              {
+                "path": "Arduino/libraries/Wire/src/Wire.cpp"
+              }
+            ],
+            "folders": []
+          }
+        ]
+      }
+    ]
+  },
+  "outDir": "build",
+  "deviceName": null,
+  "packDir": null,
+  "miscInfo": {
+    "uid": "9a621d55ba899d5193e83860eb33c57f"
+  },
+  "targets": {
+    "rtthread": {
+      "excludeList": [],
+      "toolchain": "AC6",
+      "compileConfig": {
+        "cpuType": "Cortex-M4",
+        "archExtensions": "",
+        "floatingPointHardware": "single",
+        "scatterFilePath": "",
+        "useCustomScatterFile": false,
+        "storageLayout": {
+          "RAM": [
+            {
+              "tag": "RAM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x0",
+                "size": "0x0"
+              },
+              "isChecked": false,
+              "noInit": false
+            },
+            {
+              "tag": "RAM",
+              "id": 2,
+              "mem": {
+                "startAddr": "0x0",
+                "size": "0x0"
+              },
+              "isChecked": false,
+              "noInit": false
+            },
+            {
+              "tag": "RAM",
+              "id": 3,
+              "mem": {
+                "startAddr": "0x0",
+                "size": "0x0"
+              },
+              "isChecked": false,
+              "noInit": false
+            },
+            {
+              "tag": "IRAM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x1fff8000",
+                "size": "0x2f000"
+              },
+              "isChecked": true,
+              "noInit": false
+            },
+            {
+              "tag": "IRAM",
+              "id": 2,
+              "mem": {
+                "startAddr": "0x200f0000",
+                "size": "0x1000"
+              },
+              "isChecked": false,
+              "noInit": false
+            }
+          ],
+          "ROM": [
+            {
+              "tag": "ROM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x0",
+                "size": "0x0"
+              },
+              "isChecked": false,
+              "isStartup": false
+            },
+            {
+              "tag": "ROM",
+              "id": 2,
+              "mem": {
+                "startAddr": "0x0",
+                "size": "0x0"
+              },
+              "isChecked": false,
+              "isStartup": false
+            },
+            {
+              "tag": "ROM",
+              "id": 3,
+              "mem": {
+                "startAddr": "0x0",
+                "size": "0x0"
+              },
+              "isChecked": false,
+              "isStartup": false
+            },
+            {
+              "tag": "IROM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x0",
+                "size": "0x80000"
+              },
+              "isChecked": true,
+              "isStartup": true
+            },
+            {
+              "tag": "IROM",
+              "id": 2,
+              "mem": {
+                "startAddr": "0x3000c00",
+                "size": "0x3fc"
+              },
+              "isChecked": false,
+              "isStartup": false
+            }
+          ]
+        },
+        "options": "null"
+      },
+      "uploader": "JLink",
+      "uploadConfig": {
+        "bin": "",
+        "baseAddr": "",
+        "cpuInfo": {
+          "vendor": "null",
+          "cpuName": "null"
+        },
+        "proType": 1,
+        "speed": 8000,
+        "otherCmds": ""
+      },
+      "uploadConfigMap": {},
+      "custom_dep": {
+        "name": "default",
+        "incList": [
+          "platform/core",
+          "config",
+          "platform/drivers/inc",
+          "platform/mcu/cmsis",
+          "platform/mcu/common",
+          "user/include",
+          "libraries/rt-thread/include",
+          "libraries/rt-thread/bsp",
+          "libraries/rt-thread/include/libc",
+          "Arduino",
+          ".cmsis/include",
+          "platform/startup/mdk_arm/RTE/_rtthread"
+        ],
+        "libList": [],
+        "defineList": [
+          "HC32F460",
+          "USE_DEVICE_DRIVER_LIB",
+          "__DEBUG"
+        ]
+      },
+      "builderOptions": {
+        "AC6": {
+          "version": 3,
+          "beforeBuildTasks": [],
+          "afterBuildTasks": [],
+          "global": {
+            "use-microLIB": false,
+            "output-debug-info": "enable"
+          },
+          "c/cpp-compiler": {
+            "optimization": "level-1",
+            "language-c": "c11",
+            "language-cpp": "c++11",
+            "link-time-optimization": false,
+            "one-elf-section-per-function": true,
+            "short-enums#wchar": true,
+            "warnings": "ac5-like-warnings"
+          },
+          "asm-compiler": {
+            "$use": "asm-auto",
+            "misc-controls": ""
+          },
+          "linker": {
+            "$outputTaskExcludes": [
+              ".bin"
+            ],
+            "output-format": "elf",
+            "misc-controls": "--diag_suppress=L6329",
+            "xo-base": "",
+            "ro-base": "0x00000000",
+            "rw-base": "0x1FFF8000"
+          }
+        }
+      }
+    }
+  },
+  "version": "3.6"
+}
