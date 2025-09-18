@@ -280,7 +280,7 @@ __strong_reference(_getpid, getpid);
 #else
   #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
 #endif
-void ip_putc(int ch);
+void io_putc(int ch);
 /**
   * @brief  retargets the c library printf function to the usart.
   * @param  none
@@ -288,7 +288,7 @@ void ip_putc(int ch);
   */
 PUTCHAR_PROTOTYPE
 {
-	ip_putc(ch);
+	io_putc(ch);
   return ch;
 }
 #endif

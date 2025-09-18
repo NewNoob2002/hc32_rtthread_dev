@@ -531,6 +531,7 @@ void Usart::begin(uint32_t baud, const stc_usart_uart_init_t *config, const bool
     // (tx is enabled on-demand when data is available to send)
     USART_FuncCmd(this->config->peripheral.register_base, UsartRx, Enable);
     USART_FuncCmd(this->config->peripheral.register_base, UsartRxInt, Enable);
+//		USART_FuncCmd(this->config->peripheral.register_base, UsartTx, Enable);
     // write debug message AFTER init (this UART may be used for the debug message)
     USART_DEBUG_PRINTF("begin completed\n");
     this->initialized = true;
@@ -645,7 +646,11 @@ size_t Usart::write(uint8_t ch)
     {
         yield();
     }
+//	 while (Reset == USART_GetStatus(this->config->peripheral.register_base, UsartTxEmpty))  /* Warit Tx data register empty */
+//   {
+//   }
 
+//    USART_SendData(this->config->peripheral.register_base, ch);
     // enable tx + empty interrupt
     USART_FuncCmd(this->config->peripheral.register_base, UsartTxAndTxEmptyInt, Enable);
 
@@ -660,7 +665,12 @@ const usart_receive_error_t Usart::getReceiveError()
     return rxError;
 }
 
-extern "C" void ip_putc(int ch)
+extern "C" void io_putc(int ch)
 {
 	Serial.write(ch);
+}
+
+extern "C" int io_getc(void)
+{
+	return Serial.read();
 }
