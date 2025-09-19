@@ -12,8 +12,8 @@
 //
 #ifndef DISABLE_SERIAL_GLOBALS
 Usart Serial1(&USART1_config, PA15, PA10);
-//Usart Serial2(&USART2_config, VARIANT_USART2_TX_PIN, VARIANT_USART2_RX_PIN);
-//Usart Serial3(&USART3_config, VARIANT_USART3_TX_PIN, VARIANT_USART3_RX_PIN);
+// Usart Serial2(&USART2_config, VARIANT_USART2_TX_PIN, VARIANT_USART2_RX_PIN);
+// Usart Serial3(&USART3_config, VARIANT_USART3_TX_PIN, VARIANT_USART3_RX_PIN);
 #endif
 
 //
@@ -63,7 +63,6 @@ inline void usart_irq_resign(usart_interrupt_config_t &irq, const char *name)
 #define USART_DEBUG_PRINTF(fmt, ...) \
     CORE_DEBUG_PRINTF("[USART%d] " fmt, USART_REG_TO_X(this->config->peripheral.register_base), ##__VA_ARGS__)
 
-
 //
 // automatic clock divider + oversampling calculation
 //
@@ -84,15 +83,15 @@ inline void usart_irq_resign(usart_interrupt_config_t &irq, const char *name)
  * @param usartClkDiv the clock divider used for the USART peripheral
  * @param over8 the oversampling mode (0: 16-bit, 1: 8-bit)
  * @param targetBaudrate the target baudrate
- * @return the real baudrate that will be achieved with the given parameters, or -1.0f if the parameters are invalid 
+ * @return the real baudrate that will be achieved with the given parameters, or -1.0f if the parameters are invalid
  */
-float calculateRealBaudrate(uint32_t usartClkDiv, uint8_t over8, uint32_t targetBaudrate) 
+float calculateRealBaudrate(uint32_t usartClkDiv, uint8_t over8, uint32_t targetBaudrate)
 {
     // the usart base clock is PCLK1 / usartClkDiv
     update_system_clock_frequencies();
     uint32_t usartBaseClock = SYSTEM_CLOCK_FREQUENCIES.pclk1 / usartClkDiv;
     CLKDIV_OS_DEBUG_PRINTF("usartBaseClock: %lu\n", usartBaseClock);
-    
+
     // calculate dividers (integer + fractional) as in SetUartBaudrate (hc32f460_usart.c line 1405 ff.)
     float DIV = ((float)usartBaseClock / ((float)targetBaudrate * 8.0f * (2.0f - (float)over8))) - 1.0f;
     uint32_t DIV_integer = (uint32_t)DIV;
@@ -104,13 +103,15 @@ float calculateRealBaudrate(uint32_t usartClkDiv, uint8_t over8, uint32_t target
     bool useFractionalDivider = (DIV - (float)DIV_integer) > 0.00001f;
 
     // check if dividers are valid
-    if (DIV < 0.0f || DIV_integer > 0xFFul) {
+    if (DIV < 0.0f || DIV_integer > 0xFFul)
+    {
         // DIV must be between 0 and 0xFF
         return -1.0f;
     }
 
     // if fractional divider is used, check if the fractional part is valid
-    if (useFractionalDivider && (DIV_fraction > 0x1FFul)) {
+    if (useFractionalDivider && (DIV_fraction > 0x1FFul))
+    {
         // DIV_fraction must be between 0 and 0x1FF
         return -1.0f;
     }
@@ -126,11 +127,11 @@ float calculateRealBaudrate(uint32_t usartClkDiv, uint8_t over8, uint32_t target
  * @param bestError the error of the best configuration found (OUTPUT)
  * @return true if a valid configuration was found, false if no valid configuration was found
  */
-bool findBestClockDivAndOversamplingMode(uint32_t targetBaudrate, uint32_t &bestClkDiv, uint8_t &bestOver8, float &bestError) 
+bool findBestClockDivAndOversamplingMode(uint32_t targetBaudrate, uint32_t &bestClkDiv, uint8_t &bestOver8, float &bestError)
 {
     // list of valid clock dividers
     static const uint16_t clkDividers[] = {1, 4, 16, 64};
-    #define CLK_DIVIDER_COUNT (sizeof(clkDividers) / sizeof(clkDividers[0]))
+#define CLK_DIVIDER_COUNT (sizeof(clkDividers) / sizeof(clkDividers[0]))
 
     // iterate all configurations and find the best one
     bestClkDiv = 0;
@@ -143,7 +144,8 @@ bool findBestClockDivAndOversamplingMode(uint32_t targetBaudrate, uint32_t &best
         {
             uint32_t clkDiv = clkDividers[clkDivIndex];
             float realBaudrate = calculateRealBaudrate(clkDiv, over8, targetBaudrate);
-            if (realBaudrate < 0.0f) {
+            if (realBaudrate < 0.0f)
+            {
                 // invalid configuration
                 CLKDIV_OS_DEBUG_PRINTF("invalid configuration: clkDiv=%u, over8=%u @ targetBaud=%u\n", clkDiv, over8, targetBaudrate);
                 continue;
@@ -151,12 +153,14 @@ bool findBestClockDivAndOversamplingMode(uint32_t targetBaudrate, uint32_t &best
 
             float error = (float)targetBaudrate - realBaudrate;
             CLKDIV_OS_DEBUG_PRINTF("@targetBaud=%u; realBaud=%.2f (%.2f), clkDiv=%u, over8=%u\n", targetBaudrate, realBaudrate, error, clkDiv, over8);
-            if (error < 0.0f) {
+            if (error < 0.0f)
+            {
                 // error shall be an absolute value
                 error = -error;
             }
 
-            if (error < bestError) {
+            if (error < bestError)
+            {
                 // found a new best configuration
                 bestError = error;
                 bestClkDiv = clkDiv;
@@ -170,23 +174,23 @@ bool findBestClockDivAndOversamplingMode(uint32_t targetBaudrate, uint32_t &best
 }
 
 #define CLK_DIVIDER_INT_TO_ENUM(div) \
-    div == 1  ? UsartClkDiv_1  \
-    : div == 4  ? UsartClkDiv_4  \
-    : div == 16 ? UsartClkDiv_16 \
-    : div == 64 ? UsartClkDiv_64 \
-    : UsartClkDiv_1
+    div == 1    ? UsartClkDiv_1      \
+    : div == 4  ? UsartClkDiv_4      \
+    : div == 16 ? UsartClkDiv_16     \
+    : div == 64 ? UsartClkDiv_64     \
+                : UsartClkDiv_1
 
 #define OVERSAMPLING_INT_TO_ENUM(over8) \
-    over8 == 0 ? UsartSampleBit16  \
-    : over8 == 1 ? UsartSampleBit8  \
-    : UsartSampleBit8
+    over8 == 0   ? UsartSampleBit16     \
+    : over8 == 1 ? UsartSampleBit8      \
+                 : UsartSampleBit8
 
 /**
  * @brief set the calculated clock divider and oversampling mode for the given target baudrate
  * @param config the USART configuration to set the clock divider and oversampling mode in
- * @param targetBaudrate the target baudrate 
+ * @param targetBaudrate the target baudrate
  */
-inline void setCalculatedClockDivAndOversampling(stc_usart_uart_init_t* config, uint32_t targetBaudrate)
+inline void setCalculatedClockDivAndOversampling(stc_usart_uart_init_t *config, uint32_t targetBaudrate)
 {
     uint32_t bestClkDiv;
     uint8_t bestOver8;
@@ -208,14 +212,14 @@ inline void setCalculatedClockDivAndOversampling(stc_usart_uart_init_t* config, 
 // Usart RX DMA
 //
 // [USART] -> [AOS] -> [DMA]
-// 
+//
 // 1. USART triggers RI event
 // 2. AOS forwards the event to the DMA Channel and starts the transfer
 // 3.1. DMA transfers the data from the USART RX data register to the RX buffer
-// 3.2. DMA increments the destination address 
+// 3.2. DMA increments the destination address
 //      and loops back to the start if it copied more than the buffer capacity
 // 4. DMA trigger the block transfer complete (BTC) interrupt
-// 5. the BTC handler calculates the amount of data transferred since the last BTC interrupt 
+// 5. the BTC handler calculates the amount of data transferred since the last BTC interrupt
 //    and updates the ring buffer accordingly
 //
 #ifdef USART_RX_DMA_SUPPORT
@@ -223,24 +227,34 @@ inline en_int_src_t dma_unit_and_channel_to_btc_int_src(M4_DMA_TypeDef *unit, en
 {
     if (unit == M4_DMA1)
     {
-        switch(channel)
+        switch (channel)
         {
-            case DmaCh0: return INT_DMA1_BTC0;
-            case DmaCh1: return INT_DMA1_BTC1;
-            case DmaCh2: return INT_DMA1_BTC2;
-            case DmaCh3: return INT_DMA1_BTC3;
-            default: break;
+        case DmaCh0:
+            return INT_DMA1_BTC0;
+        case DmaCh1:
+            return INT_DMA1_BTC1;
+        case DmaCh2:
+            return INT_DMA1_BTC2;
+        case DmaCh3:
+            return INT_DMA1_BTC3;
+        default:
+            break;
         }
     }
     else if (unit == M4_DMA2)
     {
-        switch(channel)
+        switch (channel)
         {
-            case DmaCh0: return INT_DMA2_BTC0;
-            case DmaCh1: return INT_DMA2_BTC1;
-            case DmaCh2: return INT_DMA2_BTC2;
-            case DmaCh3: return INT_DMA2_BTC3;
-            default: break;
+        case DmaCh0:
+            return INT_DMA2_BTC0;
+        case DmaCh1:
+            return INT_DMA2_BTC1;
+        case DmaCh2:
+            return INT_DMA2_BTC2;
+        case DmaCh3:
+            return INT_DMA2_BTC3;
+        default:
+            break;
         }
     }
 
@@ -281,21 +295,20 @@ void Usart::rx_dma_init()
     }
 
     stc_dma_config_t dmaConfig = {
-        .u16BlockSize = 1,                              // transfer 1 block (= byte) at a time
-        .u16TransferCnt = 0,                            // do not limit transfer count
-        .u32SrcAddr = dmaSrcAddr,                       // copy from USART RX data register
-        .u32DesAddr = dmaDesAddr,                       // to the RX ring buffer
-        .u16SrcRptSize = 0,                             // RX data register is not repeated
-        .u16DesRptSize = (uint16_t) rxBufferCapacity,   // ring buffer is repeated after it is filled
+        .u16BlockSize = 1,                           // transfer 1 block (= byte) at a time
+        .u16TransferCnt = 0,                         // do not limit transfer count
+        .u32SrcAddr = dmaSrcAddr,                    // copy from USART RX data register
+        .u32DesAddr = dmaDesAddr,                    // to the RX ring buffer
+        .u16SrcRptSize = 0,                          // RX data register is not repeated
+        .u16DesRptSize = (uint16_t)rxBufferCapacity, // ring buffer is repeated after it is filled
         .stcDmaChCfg = {
-            .enSrcInc = AddressFix,                     // source address remains fixed
-            .enDesInc = AddressIncrease,                // destination address is incremented
-            .enSrcRptEn = Disable,                      // source does not repeat / loop
-            .enDesRptEn = Enable,                       // destination will loop back to the start after the buffer is filled
-            .enTrnWidth = Dma8Bit,                      // transfer in 8-bit blocks
-            .enIntEn = Enable,                          // enable the BTC interrupt
-        }
-    };
+            .enSrcInc = AddressFix,      // source address remains fixed
+            .enDesInc = AddressIncrease, // destination address is incremented
+            .enSrcRptEn = Disable,       // source does not repeat / loop
+            .enDesRptEn = Enable,        // destination will loop back to the start after the buffer is filled
+            .enTrnWidth = Dma8Bit,       // transfer in 8-bit blocks
+            .enIntEn = Enable,           // enable the BTC interrupt
+        }};
 
     // enable DMA and apply config
     DMA_Cmd(dma_unit, Enable);
@@ -393,15 +406,12 @@ Usart::Usart(struct usart_config_t *config, gpio_pin_t tx_pin, gpio_pin_t rx_pin
     this->config = config;
     this->tx_pin = tx_pin;
     this->rx_pin = rx_pin;
-		this->_rx_buffer_size = rx_buffer_size;
-		this->_tx_buffer_size = tx_buffer_size;
+    this->_rx_buffer_size = rx_buffer_size;
+    this->_tx_buffer_size = tx_buffer_size;
 }
 
 Usart::~Usart()
 {
-    // free rx and tx buffers
-//		lwmem_free(this->rxBuffer);
-//		lwmem_free(this->txBuffer);
     delete this->rxBuffer;
     delete this->txBuffer;
 
@@ -415,7 +425,7 @@ Usart::~Usart()
 
 void Usart::begin(uint32_t baud)
 {
-	    // initialize and assign rx and tx buffers
+    // initialize and assign rx and tx buffers
     this->rxBuffer = new RingBuffer<uint8_t>(_rx_buffer_size);
     this->txBuffer = new RingBuffer<uint8_t>(_tx_buffer_size);
     CORE_ASSERT(this->rxBuffer != nullptr, "rx_buffer null");
@@ -481,10 +491,10 @@ void Usart::begin(uint32_t baud, uint16_t config)
         break;
     }
 
-    #ifdef USART_AUTO_CLKDIV_OS_CONFIG
+#ifdef USART_AUTO_CLKDIV_OS_CONFIG
     // auto-calculate best clock divider and oversampling mode for the given baudrate
     setCalculatedClockDivAndOversampling(&usartConfig, baud);
-    #endif
+#endif
 
     // call begin with full config
     begin(baud, &usartConfig);
@@ -515,14 +525,14 @@ void Usart::begin(uint32_t baud, const stc_usart_uart_init_t *config, const bool
     usart_irq_register(this->config->interrupts.tx_buffer_empty, "usart tx buffer empty");
     usart_irq_register(this->config->interrupts.tx_complete, "usart tx complete");
 
-    #ifdef USART_RX_DMA_SUPPORT
+#ifdef USART_RX_DMA_SUPPORT
     if (this->config->dma.is_dma_enabled())
     {
         // setup RX dma
         rx_dma_init();
-    } 
+    }
     else
-    #endif // USART_RX_DMA_SUPPORT
+#endif // USART_RX_DMA_SUPPORT
     {
         // setup RX interrupt
         usart_irq_register(this->config->interrupts.rx_data_available, "usart rx data available");
@@ -532,7 +542,7 @@ void Usart::begin(uint32_t baud, const stc_usart_uart_init_t *config, const bool
     // (tx is enabled on-demand when data is available to send)
     USART_FuncCmd(this->config->peripheral.register_base, UsartRx, Enable);
     USART_FuncCmd(this->config->peripheral.register_base, UsartRxInt, Enable);
-//		USART_FuncCmd(this->config->peripheral.register_base, UsartTx, Enable);
+    //		USART_FuncCmd(this->config->peripheral.register_base, UsartTx, Enable);
     // write debug message AFTER init (this UART may be used for the debug message)
     USART_DEBUG_PRINTF("begin completed\n");
     this->initialized = true;
@@ -546,7 +556,7 @@ void Usart::end()
     // wait for tx buffer to empty
     flush();
 
-    // clear initialized flag early so write() ignores calls 
+    // clear initialized flag early so write() ignores calls
     // and doesn't try to wait for tx buffer to empty
     this->initialized = false;
 
@@ -559,14 +569,14 @@ void Usart::end()
     usart_irq_resign(this->config->interrupts.tx_buffer_empty, "usart tx buffer empty");
     usart_irq_resign(this->config->interrupts.tx_complete, "usart tx complete");
 
-    #ifdef USART_RX_DMA_SUPPORT
+#ifdef USART_RX_DMA_SUPPORT
     if (this->config->dma.is_dma_enabled())
     {
         // de-init RX dma
         rx_dma_deinit();
     }
     else
-    #endif // USART_RX_DMA_SUPPORT
+#endif // USART_RX_DMA_SUPPORT
     {
         // resign RX interrupt
         usart_irq_resign(this->config->interrupts.rx_data_available, "usart rx data available");
@@ -647,11 +657,11 @@ size_t Usart::write(uint8_t ch)
     {
         yield();
     }
-//	 while (Reset == USART_GetStatus(this->config->peripheral.register_base, UsartTxEmpty))  /* Warit Tx data register empty */
-//   {
-//   }
+    //	 while (Reset == USART_GetStatus(this->config->peripheral.register_base, UsartTxEmpty))  /* Warit Tx data register empty */
+    //   {
+    //   }
 
-//    USART_SendData(this->config->peripheral.register_base, ch);
+    //    USART_SendData(this->config->peripheral.register_base, ch);
     // enable tx + empty interrupt
     USART_FuncCmd(this->config->peripheral.register_base, UsartTxAndTxEmptyInt, Enable);
 
@@ -668,10 +678,10 @@ const usart_receive_error_t Usart::getReceiveError()
 
 extern "C" void io_putc(int ch)
 {
-	Serial.write(ch);
+    Serial.write(ch);
 }
 
 extern "C" int io_getc(void)
 {
-	return Serial.read();
+    return Serial.read();
 }

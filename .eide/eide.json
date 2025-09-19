@@ -265,6 +265,21 @@
             "folders": []
           }
         ]
+      },
+      {
+        "name": "HAL",
+        "files": [
+          {
+            "path": "platform/hal/hal.cpp"
+          },
+          {
+            "path": "platform/hal/hal_led.cpp"
+          },
+          {
+            "path": "platform/hal/hal_test.cpp"
+          }
+        ],
+        "folders": []
       }
     ]
   },
@@ -419,7 +434,8 @@
           "libraries/rt-thread/include/libc",
           "Arduino",
           ".cmsis/include",
-          "platform/startup/mdk_arm/RTE/_rtthread"
+          "platform/startup/mdk_arm/RTE/_rtthread",
+          "platform/hal"
         ],
         "libList": [],
         "defineList": [

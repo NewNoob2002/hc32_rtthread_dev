@@ -70,6 +70,7 @@ extern "C"{
 #include "drivers/usart/Usart.h"
 #include "drivers/gpio/gpio.h"
 #include "drivers/adc/adc.h"
+#include "drivers/irqn/irqn.h"
 #endif
 
 //wiring

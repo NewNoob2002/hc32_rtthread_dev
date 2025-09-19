@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "hc32_ddl.h"
-#include "CommonMacro.h"
 
 #define PANEL_MSG_MAX_LEN 1024
 
@@ -136,6 +135,13 @@ typedef struct
 	volatile stc_i2c_com_status_t enComStatus; /*!< I2C communication status*/
 } stc_i2c_communication_t;
 
+typedef struct i2c_slave_irqn_num
+{
+	IRQn_Type irqn_event_error;
+	IRQn_Type irqn_rx_full;
+	IRQn_Type irqn_tx_cpt;
+}i2c_slave_irqn_num_t;
+
 typedef struct tag_PanelMessage_s
 {
 	int w_index;
@@ -175,7 +181,6 @@ typedef struct Power
 
 typedef struct ledState
 {
-	bool isOn;
 	uint32_t lastToggleTime;
 	uint32_t currentRate;
 } ledState;
@@ -190,6 +195,7 @@ extern PanelMessage PMessage;
 extern uint8_t u8SlaveI2CRxBuf[SLAVE_I2C_RX_BUF_LEN];
 extern uint8_t u8SlaveI2CTxBuf[SLAVE_I2C_TX_BUF_LEN];
 extern stc_i2c_communication_t stcI2cCom;
+extern i2c_slave_irqn_num_t i2c_slave_irqn_number;
 extern stc_i2c_com_mode_t Slave_I2C_Mode;
 extern unsigned int Slave_I2C_TX_Len;
 

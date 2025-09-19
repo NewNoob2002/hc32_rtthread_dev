@@ -65,7 +65,7 @@ void SysTick_Handler(void)
 
     rt_tick_increase();
     systick_ticks++;
-    //		systick_handle();
+    systick_handle();
     /* leave interrupt */
     rt_interrupt_leave();
 }

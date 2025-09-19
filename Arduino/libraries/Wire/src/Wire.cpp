@@ -26,6 +26,10 @@ TwoWire::TwoWire(i2c_peripheral_config_t *config, const gpio_pin_t scl_pin, cons
     this->_sda_pin = sda_pin;
     this->_clock_frequency = 0;
     this->isInitialized = false;
+}
+
+void TwoWire::begin(const uint32_t clockFreq)
+{
 #ifdef _WIRE_USE_RINGBUFFER
     this->rxbuff = (uint8_t *)lwmem_malloc(WIRE_BUFF_SIZE);
     this->txbuff = (uint8_t *)lwmem_malloc(WIRE_BUFF_SIZE);
@@ -33,10 +37,7 @@ TwoWire::TwoWire(i2c_peripheral_config_t *config, const gpio_pin_t scl_pin, cons
     lwrb_init(&this->rx_rb_t, this->rxbuff, WIRE_BUFF_SIZE);
     lwrb_init(&this->tx_rb_t, this->txbuff, WIRE_BUFF_SIZE);
 #endif
-}
-
-void TwoWire::begin(const uint32_t clockFreq)
-{
+	
     this->_clock_frequency = clockFreq;
 
     GPIO_SetFunc(this->_scl_pin, this->_config->scl_pin_function);

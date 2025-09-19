@@ -1,10 +1,10 @@
 #ifndef __HAL_H__
 #define __HAL_H__
 
-#include <stdint.h>
-#include <stdio.h>
 #include "Arduino.h"
 #include "mcu_config.h"
+#include <rtthread.h>
+#include <rthw.h>
 #ifdef __cplusplus
 
 namespace hal
@@ -38,15 +38,17 @@ namespace hal
 
     /* I2C slave */
     void Slave_I2c_Init();
-    void Slave_I2c_Deal();
+    void Slave_I2c_Deal(void *e);
 //		void Slave_I2c_Check();
     /* Wire */
     void Wire_Init();
 	
 		/* LED */
-		void Led_HalInit();
-		void Led_HalUpdate();
-
+		void Led_Init();
+		void Led_Update();
+		void PowerLED_Switch(int level);
+		void ChargeLED_Switch(int level);
+		void FuncLED_Switch(int level);
     /* Display */
     void Display_Init();
     void Display_Update();
